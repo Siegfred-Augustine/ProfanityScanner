@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36429.23 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfanityScanner", "ProfanityScanner.csproj", "{71B0888F-D48B-4484-AB33-636F94F9594A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71B0888F-D48B-4484-AB33-636F94F9594A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71B0888F-D48B-4484-AB33-636F94F9594A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71B0888F-D48B-4484-AB33-636F94F9594A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71B0888F-D48B-4484-AB33-636F94F9594A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BD2084E-12C7-4993-BEC2-9DB4CE129E1E}
+	EndGlobalSection
+EndGlobal

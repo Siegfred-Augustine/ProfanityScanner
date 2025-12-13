@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model ProfanityScanner.Models.Classes.Scanner
+
+<div class="text-center">
+    <form method="post" asp-action="Index">
+        <input name="inputText" id="txtInput" type="text" />
+        <button type="submit" class="btn btn-primary mt-2">Scan</button>
+    </form>
+
+    <p id="output">@Model.output</p>
+</div>
