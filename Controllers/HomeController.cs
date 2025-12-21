@@ -10,7 +10,6 @@ namespace ProfanityScanner.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly Trie profaneTrie;
 
-
         public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env)
         {
             _logger = logger;
@@ -23,14 +22,16 @@ namespace ProfanityScanner.Controllers
         {
             return View(new Scanner());
         }
+
         [HttpPost]
-        public IActionResult Index(String inputText)
+        public IActionResult Index(string inputText)
         {
             Scanner scanner = new Scanner();
             if (inputText == null)
                 return View(scanner);
-            string text = Scanner.Substitute(inputText);
-            scanner.output = scanner.Censor(inputText, profaneTrie.FindProfanity(text));
+            string firstPass = scanner.Censor(inputText, profaneTrie.FindProfanity(inputText));
+            string secondPass = Scanner.Substitute(firstPass);
+            scanner.output = scanner.Censor(firstPass, profaneTrie.FindProfanity(secondPass));
 
             return View(scanner);
         }
@@ -43,7 +44,12 @@ namespace ProfanityScanner.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(
+                new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                }
+            );
         }
     }
 }

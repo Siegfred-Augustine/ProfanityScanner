@@ -35,6 +35,7 @@ namespace ProfanityScanner.Models.Classes
             }
             node.isEndOfWord = true;
         }
+
         public void InsertFile(string folder, string file)
         {
             string path = Path.Combine(_env.ContentRootPath, folder, file);
@@ -54,41 +55,41 @@ namespace ProfanityScanner.Models.Classes
 
         public List<(int start, int end)> FindProfanity(string text)
         {
-            List<(int, int)> matches = new();
+            List<(int, int)> matches = [];
             int n = text.Length;
 
             for (int i = 0; i < n; i++)
             {
-                TrieNode node = root;
-                char prev = '\0';
+                char cur = char.ToLowerInvariant(text[i]);
 
-                for (int j = i; j < n; j++)
+                if (!char.IsLetter(cur) || !root.Children.ContainsKey(cur))
                 {
-                    char c = char.ToLowerInvariant(text[j]);
-                    char c2  = ' ';
+                    continue;
+                }
 
-                    if (j + 1 < n )
-                        c2 = char.ToLowerInvariant(text[j + 1]);
+                TrieNode node = root;
+                int start = i;
 
-                    if (node.Children.TryGetValue(c, out TrieNode next))
-                    {
-                        node = next;
-                    }
-                    else if (prev == c) //do nothing
-                    {
-                    }
-                    else if (node.Children.ContainsKey(c2))
-                    {
-                        continue;
-                    }
-                    else break;
+                while(i < n && node.Children.TryGetValue(cur, out var nextNode)) {
+                    node = nextNode;
 
-                    prev = c;
+                    char next;
+                    do {
+                        next = (i + 1 >= n) ? '\0' : char.ToLowerInvariant(text[i + 1]);
+                        cur = char.ToLowerInvariant(text[i++]);
+                    } while(i < n && next == cur && !node.Children.ContainsKey(next)) ;
 
-                    if (node.isEndOfWord)
-                    {
-                        matches.Add((i, j));
-                    }
+                    cur = next;
+                }
+
+                if (node.isEndOfWord)
+                {
+                    matches.Add((start, i - 1));
+                }
+
+                while (i < n && (!char.IsWhiteSpace(cur) || !char.IsLetter(cur)))
+                {
+                    cur = char.ToLowerInvariant(text[i++]);
                 }
             }
 
