@@ -20,6 +20,8 @@ namespace ProfanityScanner.Models.Classes
         };
 
         public string output { get; set;}
+        public List<string> profaneWords {get;set;}
+
         public Scanner()
         {
             output = " ";
@@ -58,7 +60,22 @@ namespace ProfanityScanner.Models.Classes
 
             return new string(chars);
         }
+    
+        public void AddProfaneWord(string source, List<(int start, int end)> matches)
+        {
+          if(matches.Count == 0){
+            return source;
+          }
+          char[] chars = source.ToCharArray();
 
+          foreach (var (start, end) in matches){
+            string word = "";
+            for (int i = start; i <= end; i ++){
+              string += chars[i];
+            }
+            profaneWords.Add(word);
+          }
+        }
     }
 }
 

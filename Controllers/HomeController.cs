@@ -31,6 +31,7 @@ namespace ProfanityScanner.Controllers
                 return View(scanner);
             string text = Scanner.Substitute(inputText);
             scanner.output = scanner.Censor(inputText, profaneTrie.FindProfanity(text));
+            scanner.AddProfaneWords(inputText, profaneTrie.FindProfanity(text));
 
             return View(scanner);
         }
