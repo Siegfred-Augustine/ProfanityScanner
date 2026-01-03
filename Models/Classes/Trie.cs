@@ -4,8 +4,7 @@ namespace ProfanityScanner.Models.Classes
 {
     public class TrieNode
     {
-        public Dictionary<char, TrieNode> Children { get; } =
-        new Dictionary<char, TrieNode>(4);
+        public Dictionary<char, TrieNode> Children { get; } = new Dictionary<char, TrieNode>(4);
         public bool isEndOfWord { get; set; }
 
     }
@@ -25,6 +24,8 @@ namespace ProfanityScanner.Models.Classes
             {
                 char ch = char.ToLowerInvariant(c);
 
+                // If the value in "ch" already exist within the children of node, 
+                Console.WriteLine(node.Children);
                 if (!node.Children.TryGetValue(ch, out TrieNode next))
                 {
                     next = new TrieNode();
@@ -46,7 +47,7 @@ namespace ProfanityScanner.Models.Classes
                 if (!string.IsNullOrWhiteSpace(word))
                 {
                     Insert(word);
-                    Console.WriteLine(word);
+                    //Console.WriteLine(word);
                 }
             }
         }

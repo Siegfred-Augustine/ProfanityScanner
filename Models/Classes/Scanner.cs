@@ -19,14 +19,16 @@ namespace ProfanityScanner.Models.Classes
             {'#', 'h'}
         };
 
-        public string output { get; set;}
+        public string output { get; set; }
+        public string dateTime { get; set; }
         public List<string> profaneWords {get;set;} = new List<string>();
         public string original {get; set;}
-        public static List<string> message {get;set} = new List<string>();
+        public static List<Scanner> scannerList { get; set; } = new List<Scanner>();
 
         public Scanner()
         {
             output = " ";
+            dateTime = DateTime.Now.ToString();
         }
         public static string Substitute(string source)
         {
@@ -76,7 +78,6 @@ namespace ProfanityScanner.Models.Classes
              word += chars[i];
             }
             profaneWords.Add(word);
-            message.Add(word);
           }
         }
     }

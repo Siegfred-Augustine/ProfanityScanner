@@ -31,3 +31,37 @@ D:\linux_assets\ProfanityScanner\obj\Debug\net8.0\refint\ProfanityScanner.dll
 D:\linux_assets\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.pdb
 D:\linux_assets\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.genruntimeconfig.cache
 D:\linux_assets\ProfanityScanner\obj\Debug\net8.0\ref\ProfanityScanner.dll
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\appsettings.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\ProfanityScanner.staticwebassets.runtime.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\ProfanityScanner.staticwebassets.endpoints.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\ProfanityScanner.exe
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\ProfanityScanner.deps.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\ProfanityScanner.runtimeconfig.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\ProfanityScanner.dll
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\bin\Debug\net8.0\ProfanityScanner.pdb
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.AssemblyInfoInputs.cache
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.AssemblyInfo.cs
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.csproj.CoreCompileInputs.cache
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.RazorAssemblyInfo.cache
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.RazorAssemblyInfo.cs
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.sourcelink.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\scopedcss\bundle\ProfanityScanner.styles.css
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\scopedcss\projectbundle\ProfanityScanner.bundle.scp.css
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.dll
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\refint\ProfanityScanner.dll
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.pdb
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ProfanityScanner.genruntimeconfig.cache
+C:\Users\johns\Downloads\coding-software\Developer Folders\RemoteRepo\ProfanityScanner\obj\Debug\net8.0\ref\ProfanityScanner.dll

@@ -9,8 +9,7 @@ namespace ProfanityScanner.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly Trie profaneTrie;
-
-
+         
         public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env)
         {
             _logger = logger;
@@ -21,20 +20,29 @@ namespace ProfanityScanner.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(new Scanner());
+            
+            return View(Scanner.scannerList);
         }
         [HttpPost]
         public IActionResult Index(String inputText)
         {
             Scanner scanner = new Scanner();
             if (inputText == null)
-                return View(scanner);
+                return View(Scanner.scannerList);
             scanner.original = inputText;
             string text = Scanner.Substitute(inputText);
             scanner.output = scanner.Censor(inputText, profaneTrie.FindProfanity(text));
             scanner.AddProfaneWords(inputText, profaneTrie.FindProfanity(text));
 
-            return View(scanner);
+            Scanner.scannerList.Add(scanner);
+            foreach(var message in Scanner.scannerList)
+            {
+                foreach (var word in message.profaneWords) 
+                { 
+                    Console.WriteLine(word);
+                }
+            }
+            return View(Scanner.scannerList);
         }
 
         public IActionResult Privacy()

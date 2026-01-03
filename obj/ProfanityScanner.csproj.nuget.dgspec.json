@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\linux_assets\\ProfanityScanner\\ProfanityScanner.csproj": {}
+    "C:\\Users\\johns\\Downloads\\coding-software\\Developer Folders\\RemoteRepo\\ProfanityScanner\\ProfanityScanner.csproj": {}
   },
   "projects": {
-    "D:\\linux_assets\\ProfanityScanner\\ProfanityScanner.csproj": {
+    "C:\\Users\\johns\\Downloads\\coding-software\\Developer Folders\\RemoteRepo\\ProfanityScanner\\ProfanityScanner.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\linux_assets\\ProfanityScanner\\ProfanityScanner.csproj",
+        "projectUniqueName": "C:\\Users\\johns\\Downloads\\coding-software\\Developer Folders\\RemoteRepo\\ProfanityScanner\\ProfanityScanner.csproj",
         "projectName": "ProfanityScanner",
-        "projectPath": "D:\\linux_assets\\ProfanityScanner\\ProfanityScanner.csproj",
-        "packagesPath": "C:\\Users\\rhomer\\.nuget\\packages\\",
-        "outputPath": "D:\\linux_assets\\ProfanityScanner\\obj\\",
+        "projectPath": "C:\\Users\\johns\\Downloads\\coding-software\\Developer Folders\\RemoteRepo\\ProfanityScanner\\ProfanityScanner.csproj",
+        "packagesPath": "C:\\Users\\johns\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\johns\\Downloads\\coding-software\\Developer Folders\\RemoteRepo\\ProfanityScanner\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\rhomer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\johns\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

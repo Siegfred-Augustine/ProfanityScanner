@@ -1,13 +1,66 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 }
-@model ProfanityScanner.Models.Classes.Scanner
 
-<div class="text-center">
-    <form method="post" asp-action="Index">
-        <input name="inputText" id="txtInput" type="text" />
-        <button type="submit" class="btn btn-primary mt-2">Scan</button>
-    </form>
+<head>
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+<div class="window-container">
+    <div class="main-container">
+        <header>
+            <div class="title-container">
+                <h1>Profanity Filter</h1>
+                <p>Real-time message monitoring and censorship</p>
+            </div>
+            <div class="insights-btn-container">
+                <button class="btn btn-light btn-view-insight">View Insights</button>
+            </div>
+        </header>
+        <main class="text-center messages-container">
+            <form class="form-container" method="post" asp-action="Index">
+                <textarea name="inputText" id="txtInput" type="text" placeholder="type your message here..."></textarea>
+                <button type="submit" class="btn btn-primary mt-2">Scan</button>
+            </form>
+            <div class="profane-item-container">
+                @foreach(var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
+                {
+                    <div class="message-item">
+                        <h1>@message.output</h1>
+                        <p>@message.original</p>
+                    </div>
+                    foreach(var word in message.profaneWords)
+                    {
+                        <div class="message-item">
+                            <div class="message-item-header">
+                                <p>@message.dateTime</p>
+                                <p>Profanity Count: @message.profaneWords.Count</p>
+                            </div>
+                            <h1>@word</h1>  
 
-    <p id="output">@Model.output</p>
+                            @* <p id="output">@Model.output</p> *@
+                        </div>
+                    }
+                }
+            </div>
+        </main>
+    </div>
+    <aside class="sidebar-container r-flex">
+        <div class="siderbar-row header-container">
+            <h1>Profanity Insights</h1>
+        </div>
+        <div class="siderbar-row identified-words-container">
+            <h1>Identified Profane Words</h1>
+            <div class="identified-words-list-container">
+                @* Insert list of identified profane words *@
+            </div>
+        </div>
+        <div class="siderbar-row summary-container">
+            <h1>Summary By Message</h1>
+            <div class="summary-list-container">
+                @* Insert per message summary *@
+            </div>
+        </div>
+
+    </aside>
 </div>
