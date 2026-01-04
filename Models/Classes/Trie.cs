@@ -64,7 +64,6 @@ namespace ProfanityScanner.Models.Classes
             for (int i = 0; i < n; i++)
             {
                 TrieNode node = root;
-                TrieNode prevNode;
                 char prev = '\0';
 
                 for (int j = i; j < n; j++)
@@ -72,7 +71,6 @@ namespace ProfanityScanner.Models.Classes
                     // Convert current char to lowercase
                     char c = char.ToLowerInvariant(text[j]);
                     char c2  = ' ';
-                    prevNode = node;
 
                     // Convert next char to lowercase
                     if (j + 1 < n )
@@ -90,6 +88,7 @@ namespace ProfanityScanner.Models.Classes
                     else if (prev == c) 
                     {
                         // Do nothing
+
                     }
 
                     else if (node.Children.ContainsKey(c2)) 
@@ -102,18 +101,16 @@ namespace ProfanityScanner.Models.Classes
                         break; 
                     }
 
+                    prev = c;
                     // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
-                    if (node.isEndOfWord)
+                    if (node.isEndOfWord && c != c2)
                     {
-                        if (prev == c)
-                        {
-                            continue;
-                        }
                         matches.Add((i, j));
                         Console.WriteLine(node.overallWord);
+                        i = j - 1;
+                        break;
                     }
 
-                    prev = c;
                 }
             }
 
