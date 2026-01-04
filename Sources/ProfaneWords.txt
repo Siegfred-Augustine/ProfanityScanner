@@ -1,6 +1,7 @@
 abnoy
 amputa
 animal ka
+animalka
 baghak
 bakla
 bantutan
@@ -79,6 +80,7 @@ kipay
 kumag
 kumikinang ina mo
 kumikinanginang ina mo
+kumikinanginamo
 kupal
 leche
 leching
@@ -106,9 +108,11 @@ pakshet
 pakshit
 pakyu
 pesteng yawa
+pistengyawa
 pisot
 piste
 piste ginoo
+pisteginoo
 poke
 pokpok
 pokpok
@@ -129,6 +133,8 @@ punyeta
 puta
 putang
 putang ina
+putangina
+putanginamo
 putangina mo
 putaragis
 putragis
@@ -149,6 +155,7 @@ taena
 tamod
 tanga
 tangina
+tanginamo
 tangina mo
 tangnamo
 taragis

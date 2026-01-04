@@ -103,7 +103,7 @@ namespace ProfanityScanner.Models.Classes
 
                     prev = c;
                     // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
-                    if (node.isEndOfWord && c != c2)
+                    if (node.isEndOfWord && c != c2 && !node.Children.ContainsKey(c2))
                     {
                         matches.Add((i, j));
                         Console.WriteLine(node.overallWord);
