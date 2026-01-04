@@ -26,10 +26,16 @@ namespace ProfanityScanner.Controllers
         [HttpPost]
         public IActionResult Index(String inputText)
         {
+            // New Scanner instance;
             Scanner scanner = new Scanner();
-            if (inputText == null)
-                return View(Scanner.scannerList);
+
+            // Check if there is no input
+            if (inputText == null) return View(Scanner.scannerList);
+
+            // Store original text in the new Scanner instance
             scanner.original = inputText;
+
+            // Normalize input: find letter substitutions (i.e. @ -> a, 4 -> a)
             string text = Scanner.Substitute(inputText);
             scanner.output = scanner.Censor(inputText, profaneTrie.FindProfanity(text));
             scanner.AddProfaneWords(inputText, profaneTrie.FindProfanity(text));

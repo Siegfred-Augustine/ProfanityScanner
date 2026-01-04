@@ -25,22 +25,22 @@
             <div class="profane-item-container">
                 @foreach(var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
                 {
+                    
                     <div class="message-item">
+                        <div class="message-item-header">
+                            <p>Profanity Count: @message.profaneWords.Count</p>
+                            <p>@message.dateTime</p>
+                        </div>
                         <h1>@message.output</h1>
                         <p>@message.original</p>
-                    </div>
-                    foreach(var word in message.profaneWords)
-                    {
-                        <div class="message-item">
-                            <div class="message-item-header">
-                                <p>@message.dateTime</p>
-                                <p>Profanity Count: @message.profaneWords.Count</p>
-                            </div>
-                            <h1>@word</h1>  
-
+                   
+                        <p>Triggered Word:</p>
+                        @foreach(var word in message.profaneWords)
+                        {
+                            <p>@word</p>  
                             @* <p id="output">@Model.output</p> *@
-                        </div>
-                    }
+                        }
+                    </div>
                 }
             </div>
         </main>

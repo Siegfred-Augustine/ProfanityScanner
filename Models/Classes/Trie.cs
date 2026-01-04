@@ -1,4 +1,5 @@
-﻿using static System.Net.Mime.MediaTypeNames;
+﻿using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ProfanityScanner.Models.Classes
 {
@@ -7,6 +8,7 @@ namespace ProfanityScanner.Models.Classes
         public Dictionary<char, TrieNode> Children { get; } = new Dictionary<char, TrieNode>(4);
         public bool isEndOfWord { get; set; }
 
+        public string overallWord { get; set; }
     }
     public class Trie
     {
@@ -19,13 +21,12 @@ namespace ProfanityScanner.Models.Classes
         public void Insert(string word)
         {
             TrieNode node = root;
-
+            var completedWord = new System.Text.StringBuilder();
             foreach (char c in word)
             {
                 char ch = char.ToLowerInvariant(c);
 
-                // If the value in "ch" already exist within the children of node, 
-                Console.WriteLine(node.Children);
+                // If the value in "ch" already exist within the keys of the node
                 if (!node.Children.TryGetValue(ch, out TrieNode next))
                 {
                     next = new TrieNode();
@@ -33,7 +34,9 @@ namespace ProfanityScanner.Models.Classes
                 }
 
                 node = next;
+                completedWord.Append(c);
             }
+            node.overallWord = completedWord.ToString();
             node.isEndOfWord = true;
         }
         public void InsertFile(string folder, string file)
@@ -47,7 +50,7 @@ namespace ProfanityScanner.Models.Classes
                 if (!string.IsNullOrWhiteSpace(word))
                 {
                     Insert(word);
-                    //Console.WriteLine(word);
+                    Console.WriteLine(word);
                 }
             }
         }
@@ -61,35 +64,56 @@ namespace ProfanityScanner.Models.Classes
             for (int i = 0; i < n; i++)
             {
                 TrieNode node = root;
+                TrieNode prevNode;
                 char prev = '\0';
 
                 for (int j = i; j < n; j++)
                 {
+                    // Convert current char to lowercase
                     char c = char.ToLowerInvariant(text[j]);
                     char c2  = ' ';
+                    prevNode = node;
 
+                    // Convert next char to lowercase
                     if (j + 1 < n )
+                    {
                         c2 = char.ToLowerInvariant(text[j + 1]);
+                    }
 
+                    // If current char 'c' is within the dictionary of the current node, move to the next node containing 'c' 
                     if (node.Children.TryGetValue(c, out TrieNode next))
                     {
                         node = next;
                     }
-                    else if (prev == c) //do nothing
-                    {
-                    }
-                    else if (node.Children.ContainsKey(c2))
-                    {
-                        continue;
-                    }
-                    else break;
 
-                    prev = c;
+                    // If the current char 'c' is a duplicate of the previous, do nothing (case: "tannnga")
+                    else if (prev == c) 
+                    {
+                        // Do nothing
+                    }
 
+                    else if (node.Children.ContainsKey(c2)) 
+                    { 
+                        continue; 
+                    }
+                    
+                    else 
+                    { 
+                        break; 
+                    }
+
+                    // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
                     if (node.isEndOfWord)
                     {
+                        if (prev == c)
+                        {
+                            continue;
+                        }
                         matches.Add((i, j));
+                        Console.WriteLine(node.overallWord);
                     }
+
+                    prev = c;
                 }
             }
 
