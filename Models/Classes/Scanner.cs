@@ -45,6 +45,7 @@ namespace ProfanityScanner.Models.Classes
                     output.Append(ch);
                 }
             }
+            Console.WriteLine(output.ToString());
             return output.ToString();
         }
         public string Censor(string source, List<(int start, int end)> matches)

@@ -50,7 +50,7 @@ namespace ProfanityScanner.Models.Classes
                 if (!string.IsNullOrWhiteSpace(word))
                 {
                     Insert(word);
-                    Console.WriteLine(word);
+                    //Console.WriteLine(word);
                 }
             }
         }
@@ -65,18 +65,14 @@ namespace ProfanityScanner.Models.Classes
             {
                 TrieNode node = root;
                 char prev = '\0';
+                int lastMatch = -1;
 
                 for (int j = i; j < n; j++)
                 {
                     // Convert current char to lowercase
                     char c = char.ToLowerInvariant(text[j]);
-                    char c2  = ' ';
 
                     // Convert next char to lowercase
-                    if (j + 1 < n )
-                    {
-                        c2 = char.ToLowerInvariant(text[j + 1]);
-                    }
 
                     // If current char 'c' is within the dictionary of the current node, move to the next node containing 'c' 
                     if (node.Children.TryGetValue(c, out TrieNode next))
@@ -90,27 +86,24 @@ namespace ProfanityScanner.Models.Classes
                         // Do nothing
 
                     }
-
-                    else if (node.Children.ContainsKey(c2)) 
-                    { 
-                        continue; 
-                    }
-                    
                     else 
                     { 
                         break; 
                     }
 
-                    prev = c;
                     // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
-                    if (node.isEndOfWord && c != c2 && !node.Children.ContainsKey(c2))
+                    
+                    if (node.isEndOfWord)
                     {
-                        matches.Add((i, j));
-                        Console.WriteLine(node.overallWord);
-                        i = j - 1;
-                        break;
+                        lastMatch = j;
                     }
 
+                    prev = c;
+                }
+
+                if(lastMatch != -1){
+                  matches.Add((i, lastMatch));
+                  i = lastMatch - 1;
                 }
             }
 
