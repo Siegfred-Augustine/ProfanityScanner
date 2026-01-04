@@ -52,7 +52,10 @@
         <div class="siderbar-row identified-words-container">
             <h1>Identified Profane Words</h1>
             <div class="identified-words-list-container">
-                @* Insert list of identified profane words *@
+        @foreach(var message in ProfanityScanner.Models.Classes.Scanner.originalProfane){
+          <p>@message</p>
+        }
+
             </div>
         </div>
         <div class="siderbar-row summary-container">

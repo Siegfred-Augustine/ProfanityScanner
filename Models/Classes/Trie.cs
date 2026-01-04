@@ -60,6 +60,7 @@ namespace ProfanityScanner.Models.Classes
         {
             List<(int, int)> matches = new();
             int n = text.Length;
+            TrieNode lastNode = new TrieNode();
 
             for (int i = 0; i < n; i++)
             {
@@ -79,9 +80,8 @@ namespace ProfanityScanner.Models.Classes
                     {
                         node = next;
                     }
-
                     // If the current char 'c' is a duplicate of the previous, do nothing (case: "tannnga")
-                    else if (prev == c) 
+                    else if (prev == c ) 
                     {
                         // Do nothing
 
@@ -96,6 +96,7 @@ namespace ProfanityScanner.Models.Classes
                     if (node.isEndOfWord)
                     {
                         lastMatch = j;
+                        lastNode = node;
                     }
 
                     prev = c;
@@ -104,6 +105,7 @@ namespace ProfanityScanner.Models.Classes
                 if(lastMatch != -1){
                   matches.Add((i, lastMatch));
                   i = lastMatch - 1;
+                  Scanner.originalProfane.Add(lastNode.overallWord);
                 }
             }
 

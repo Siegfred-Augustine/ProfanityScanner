@@ -24,6 +24,7 @@ namespace ProfanityScanner.Models.Classes
         public List<string> profaneWords {get;set;} = new List<string>();
         public string original {get; set;}
         public static List<Scanner> scannerList { get; set; } = new List<Scanner>();
+        public static SortedSet<string> originalProfane {get; set;} = new SortedSet<string>();
 
         public Scanner()
         {
