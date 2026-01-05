@@ -5,12 +5,6 @@ namespace ProfanityScanner.Models.Classes
 {
     public class TrieNode
     {
-        public static Dictionary<char,char> letterEquiv = new Dictionary<char,char>{ 
-            {'i', 'e'},
-            {'e', 'i'},
-            {'o', 'u'},
-            {'u', 'o'}
-        };
         public Dictionary<char, TrieNode> Children { get; } = new Dictionary<char, TrieNode>(4);
         public bool isEndOfWord { get; set; }
 
