@@ -84,29 +84,25 @@ namespace ProfanityScanner.Models.Classes
                     {
                         node = next;
                     }
-                    else if(TrieNode.letterEquiv.TryGetValue(c, out char equivC))
+                    else if (TrieNode.letterEquiv.TryGetValue(c, out char equivC))
                     {
                         Console.WriteLine("firing");
-                        if(node.Children.TryGetValue(equivC, out TrieNode equivNode))
+                        if (node.Children.TryGetValue(equivC, out TrieNode equivNode))
                         {
-                          Console.WriteLine("inner if");    
-                          node = equivNode;
+                            Console.WriteLine("inner if");
+                            node = equivNode;
                         }
                     }
                     // If the current char 'c' is a duplicate of the previous, do nothing (case: "tannnga")
-                    else if (prev == c ) 
+                    else if (prev == c)
                     {
                         // Do nothing
 
                     }
-                    else 
-                    { 
-                        break; 
+                    else
+                    {
+                        break;
                     }
-
-                    // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
-                    
-                       Console.WriteLine(node.overallWord);
                     if (node.isEndOfWord)
                     {
                         lastMatch = j;

@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j7azudewQ6nsfGtZ6XBpL3ykwv+j9T33yKkValYmCIrPnEf374y6eAmjkf63cIBDixaUOuTKe6ElRFAXuOdLRA==",
+  "dgSpecHash": "ch8Nzqf5A9Q=",
   "success": true,
-  "projectFilePath": "/home/Romir/ProfanityScanner/ProfanityScanner.csproj",
-  "expectedPackageFiles": [
-    "/home/Romir/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.22/microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\johns\\Downloads\\coding-software\\Developer Folders\\RemoteRepo\\ProfanityScanner\\ProfanityScanner.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

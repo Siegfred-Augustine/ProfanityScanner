@@ -4,6 +4,8 @@
     --dark-gray-primary: #3A3A3A;
     --dark-gray-secondary: #2A2A2A;
     --default-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.25);
+    --orange: #E74C3C;
+    --red: #E7000B;
 }
 
 * {
@@ -117,6 +119,75 @@ main {
 
 .message-item h1, p {
     text-align: left;
+    margin: 0;
 }
 
+/* Sidebar */
+aside {
+    padding: 1em 2em;
+}
 
+.sidebar-row-title {
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.sidebar-message-item-container p {
+    color: var(--white);
+    opacity: 0.7;
+    font-size: 0.7em;
+}
+
+.sidebar-message-item-container h1 {
+    font-size: 1em;
+}
+
+.summary-list-item {
+
+}
+
+.identified-words-list-container, .sidebar-message-item-detected-words {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.identified-profane-item {
+    margin: 0;
+    background-color: var(--orange);
+    padding: 0.3em 0.8em;
+}
+
+.summary-list-container {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1em;
+}
+
+.sidebar-message-item-container {
+    background-color: var(--dark-gray-secondary);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875em;
+}
+
+.sidebar-message-item-container:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.sidebar-message-item-detected-words {
+    display: flex;
+}
+
+.detected-word-item {
+    background-color: var(--red);
+}
+
+.sidebar-message-item-hide .sidebar-message-item-hide.hidden-content {
+    display: none;
+}
