@@ -5,6 +5,12 @@ namespace ProfanityScanner.Models.Classes
 {
     public class TrieNode
     {
+        public static Dictionary<char,char> letterEquiv = new Dictionary<char,char>{ 
+            {'i', 'e'},
+            {'e', 'i'},
+            {'o', 'u'},
+            {'u', 'o'}
+        };
         public Dictionary<char, TrieNode> Children { get; } = new Dictionary<char, TrieNode>(4);
         public bool isEndOfWord { get; set; }
 
@@ -72,13 +78,20 @@ namespace ProfanityScanner.Models.Classes
                 {
                     // Convert current char to lowercase
                     char c = char.ToLowerInvariant(text[j]);
-
                     // Convert next char to lowercase
-
                     // If current char 'c' is within the dictionary of the current node, move to the next node containing 'c' 
                     if (node.Children.TryGetValue(c, out TrieNode next))
                     {
                         node = next;
+                    }
+                    else if(TrieNode.letterEquiv.TryGetValue(c, out char equivC))
+                    {
+                        Console.WriteLine("firing");
+                        if(node.Children.TryGetValue(equivC, out TrieNode equivNode))
+                        {
+                          Console.WriteLine("inner if");    
+                          node = equivNode;
+                        }
                     }
                     // If the current char 'c' is a duplicate of the previous, do nothing (case: "tannnga")
                     else if (prev == c ) 
@@ -93,6 +106,7 @@ namespace ProfanityScanner.Models.Classes
 
                     // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
                     
+                       Console.WriteLine(node.overallWord);
                     if (node.isEndOfWord)
                     {
                         lastMatch = j;
