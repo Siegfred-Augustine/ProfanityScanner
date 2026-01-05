@@ -48,7 +48,7 @@ namespace ProfanityScanner.Models.Classes
         public void InsertFile(string folder, string file)
         {
             string path = Path.Combine(_env.ContentRootPath, folder, file);
-
+            
             foreach (string line in File.ReadLines(path))
             {
                 string word = line.Trim();
@@ -56,20 +56,20 @@ namespace ProfanityScanner.Models.Classes
                 if (!string.IsNullOrWhiteSpace(word))
                 {
                     Insert(word);
-                    //Console.WriteLine(word);
                 }
             }
         }
 
+        
 
         public List<(int start, int end)> FindProfanity(string text)
         {
             List<(int, int)> matches = new();
             int n = text.Length;
-            TrieNode lastNode = new TrieNode();
 
             for (int i = 0; i < n; i++)
             {
+                TrieNode lastNode = new TrieNode();
                 TrieNode node = root;
                 char prev = '\0';
                 int lastMatch = -1;
@@ -84,15 +84,6 @@ namespace ProfanityScanner.Models.Classes
                     {
                         node = next;
                     }
-                    else if(TrieNode.letterEquiv.TryGetValue(c, out char equivC))
-                    {
-                        Console.WriteLine("firing");
-                        if(node.Children.TryGetValue(equivC, out TrieNode equivNode))
-                        {
-                          Console.WriteLine("inner if");    
-                          node = equivNode;
-                        }
-                    }
                     // If the current char 'c' is a duplicate of the previous, do nothing (case: "tannnga")
                     else if (prev == c ) 
                     {
@@ -106,7 +97,7 @@ namespace ProfanityScanner.Models.Classes
 
                     // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
                     
-                       Console.WriteLine(node.overallWord);
+                      // Console.WriteLine(node.overallWord);
                     if (node.isEndOfWord)
                     {
                         lastMatch = j;
@@ -115,7 +106,6 @@ namespace ProfanityScanner.Models.Classes
 
                     prev = c;
                 }
-
                 if(lastMatch != -1){
                   matches.Add((i, lastMatch));
                   i = lastMatch - 1;

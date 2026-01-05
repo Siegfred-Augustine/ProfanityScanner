@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProfanityScanner")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55a2f7da16e2790a1a1a8a7d4f922193c898bf76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c7a79b303aab20de9c5d6bcc0e5e1d35b0f1d51b")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProfanityScanner")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProfanityScanner")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
