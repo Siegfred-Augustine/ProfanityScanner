@@ -60,6 +60,7 @@ namespace ProfanityScanner.Models.Classes
                 }
             }
         }
+
         public List<(int start, int end)> FindProfanity(string text)
         {
             List<(int, int)> matches = new();
@@ -68,21 +69,49 @@ namespace ProfanityScanner.Models.Classes
 
             while (i < n)
             {
+                Console.WriteLine($"\n=== Checking position {i} ===");
+                Console.WriteLine($"Char: '{text[i]}', Remaining: '{text.Substring(i)}'");
+                
                 var result = SearchFromPosition(text, i);
                 
                 if (result.endPos != -1)
                 {
+                    string matchedText = text.Substring(i, result.endPos - i + 1);
+                    Console.WriteLine($"✓ Found: '{result.word}' from pos {i} to {result.endPos}");
+                    Console.WriteLine($"  Matched text: '{matchedText}'");
                     matches.Add((i, result.endPos));
                     Scanner.originalProfane.Add(result.word);
-                    // Move to the position right after this match
-                    i = result.endPos + 1;
+                    
+                    // Check if the last character of this match could start a new word
+                    char lastChar = char.ToLowerInvariant(text[result.endPos]);
+                    int nextPos = result.endPos + 1;
+                    
+                    // If the last character can start a word from root, check from that position instead
+                    if (root.Children.ContainsKey(lastChar))
+                    {
+                        var testMatch = MatchWord(text, result.endPos, root, result.endPos, '\0');
+                        if (testMatch.endPos != -1)
+                        {
+                            Console.WriteLine($"  Last char '{lastChar}' can start a new word, backtracking to pos {result.endPos}");
+                            nextPos = result.endPos;
+                        }
+                    }
+                    
+                    i = nextPos;
+                    Console.WriteLine($"  Next check will be at position {i}");
+                    if (i < text.Length)
+                    {
+                        Console.WriteLine($"  Next char: '{text[i]}'");
+                    }
                 }
                 else
                 {
-                    // No match found, move to next position
+                    Console.WriteLine($"✗ No match found at position {i}");
                     i++;
                 }
             }
+            
+            Console.WriteLine($"\n=== Total matches: {matches.Count} ===");
 
             return matches;
         }
@@ -196,7 +225,8 @@ namespace ProfanityScanner.Models.Classes
             }
             
             return (bestEnd, bestWord);
-        }     
+        } 
+               
     } 
    
 }
