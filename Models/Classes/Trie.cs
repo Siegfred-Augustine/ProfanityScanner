@@ -68,21 +68,17 @@ namespace ProfanityScanner.Models.Classes
 
             while (i < n)
             {
-                Console.WriteLine($"Checking position {i}, char: '{text[i]}', remaining: '{text.Substring(i)}'");
                 var result = SearchFromPosition(text, i);
                 
                 if (result.endPos != -1)
                 {
-                    Console.WriteLine($"  -> Found: '{result.word}' from {i} to {result.endPos}");
                     matches.Add((i, result.endPos));
                     Scanner.originalProfane.Add(result.word);
                     // Move to the position right after this match
                     i = result.endPos + 1;
-                    Console.WriteLine($"  -> Jumping to position {i}");
                 }
                 else
                 {
-                    Console.WriteLine($"  -> No match found");
                     // No match found, move to next position
                     i++;
                 }
