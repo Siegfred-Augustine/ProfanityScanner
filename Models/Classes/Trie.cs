@@ -61,27 +61,29 @@ namespace ProfanityScanner.Models.Classes
             }
         }
 
-        
-         public List<(int start, int end)> FindProfanity(string text)
+      public List<(int start, int end)> FindProfanity(string text)
+      {
+          List<(int, int)> matches = new();
+          int n = text.Length;
+
+          for (int i = 0; i < n; i++)
           {
-              List<(int, int)> matches = new();
-              int n = text.Length;
-
-              for (int i = 0; i < n; i++)
+              var result = FindLongestMatch(text, i, root, i, '\0');
+              
+              if (result.matchEnd != -1)
               {
-                  var result = FindLongestMatch(text, i, root, i, '\0');
+                  matches.Add((i, result.matchEnd));
+                  Scanner.originalProfane.Add(result.node.overallWord);
                   
-                  if (result.matchEnd != -1)
-                  {
-                      matches.Add((i, result.matchEnd));
-                      Scanner.originalProfane.Add(result.node.overallWord);
-                      i = result.matchEnd; // Skip past the matched word
-                  }
+                  // Check if another word might start within or immediately after this match
+                  // Start checking from i+1 instead of jumping to the end
+                  // This allows overlapping or consecutive matches
               }
-
-              return matches;
           }
-          
+
+          return matches;
+      }
+
       private (int matchEnd, TrieNode node) FindLongestMatch(
           string text, int start, TrieNode node, int pos, char prev)
       {
@@ -177,7 +179,9 @@ namespace ProfanityScanner.Models.Classes
           }
           
           return (bestEnd, bestNode);
-      }
+      }   
+             
     }
+
 }
 
