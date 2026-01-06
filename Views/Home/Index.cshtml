@@ -28,18 +28,9 @@
                     
                     <div class="message-item">
                         <div class="message-item-header">
-                            <p>Profanity Count: @message.profaneWords.Count</p>
                             <p>@message.dateTime</p>
                         </div>
-                        <h1>@message.output</h1>
-                        <p>@message.original</p>
-                   
-                        <p>Triggered Word:</p>
-                        @foreach(var word in message.profaneWords)
-                        {
-                            <p>@word</p>  
-                            @* <p id="output">@Model.output</p> *@
-                        }
+                        <h1>@message.output</h1>                        
                     </div>
                 }
             </div>
@@ -50,20 +41,50 @@
             <h1>Profanity Insights</h1>
         </div>
         <div class="siderbar-row identified-words-container">
-            <h1>Identified Profane Words</h1>
+            <h1 class="sidebar-row-title">Identified Profane Words</h1>
             <div class="identified-words-list-container">
-        @foreach(var message in ProfanityScanner.Models.Classes.Scanner.originalProfane){
-          <p>@message</p>
-        }
-
+                @foreach(var message in ProfanityScanner.Models.Classes.Scanner.originalProfane){
+                  <p class="identified-profane-item">@message</p>
+                }
             </div>
         </div>
         <div class="siderbar-row summary-container">
-            <h1>Summary By Message</h1>
+            <h1 class="sidebar-row-title">Summary By Message</h1>
             <div class="summary-list-container">
-                @* Insert per message summary *@
+                @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
+                {
+                    <div class="summary-list-item" onclick="markAsHide(this)">
+                        <div class="sidebar-message-item-container">
+                            <div class="sidebar-message-item-header">
+                                <h1>@message.output</h1>
+                                <p>@message.dateTime</p>
+                            </div>
+
+                            <div class="sidebar-message-item-hide hide-content">
+                                <div class="sidebar-message-item-content">
+                                    <p>Original message:</p>
+                                    <h1>@message.original</h1>
+                                </div>
+                                <div class="sidebar-message-item-detected-words-container">
+                                    <p>Detected words:</p>
+                                    <div class="sidebar-message-item-detected-words">
+                                        @foreach (var word in message.profaneWords)
+                                        {
+                                            <h1 class="identified-profane-item detected-word-item">@word</h1>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-profane-count">
+                            @message.profaneWords.Count()
+                        </div>
+                    </div>
+                }
             </div>
         </div>
 
     </aside>
 </div>
+<script src="/js/scripts.js"></script>
