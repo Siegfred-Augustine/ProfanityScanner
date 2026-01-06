@@ -60,128 +60,150 @@ namespace ProfanityScanner.Models.Classes
                 }
             }
         }
+        public List<(int start, int end)> FindProfanity(string text)
+        {
+            List<(int, int)> matches = new();
+            int n = text.Length;
+            int i = 0;
 
-      public List<(int start, int end)> FindProfanity(string text)
-      {
-          List<(int, int)> matches = new();
-          int n = text.Length;
+            while (i < n)
+            {
+                Console.WriteLine($"Checking position {i}, char: '{text[i]}', remaining: '{text.Substring(i)}'");
+                var result = SearchFromPosition(text, i);
+                
+                if (result.endPos != -1)
+                {
+                    Console.WriteLine($"  -> Found: '{result.word}' from {i} to {result.endPos}");
+                    matches.Add((i, result.endPos));
+                    Scanner.originalProfane.Add(result.word);
+                    // Move to the position right after this match
+                    i = result.endPos + 1;
+                    Console.WriteLine($"  -> Jumping to position {i}");
+                }
+                else
+                {
+                    Console.WriteLine($"  -> No match found");
+                    // No match found, move to next position
+                    i++;
+                }
+            }
 
-          for (int i = 0; i < n; i++)
-          {
-              var result = FindLongestMatch(text, i, root, i, '\0');
-              
-              if (result.matchEnd != -1)
-              {
-                  matches.Add((i, result.matchEnd));
-                  Scanner.originalProfane.Add(result.node.overallWord);
-                  
-                  // Check if another word might start within or immediately after this match
-                  // Start checking from i+1 instead of jumping to the end
-                  // This allows overlapping or consecutive matches
-              }
-          }
+            return matches;
+        }
 
-          return matches;
-      }
+        private (int endPos, string word) SearchFromPosition(string text, int startPos)
+        {
+            // Try to find the longest profanity match starting at startPos
+            var result = MatchWord(text, startPos, root, startPos, '\0');
+            
+            if (result.endPos == -1)
+                return (-1, null);
+            
+            // Consume trailing duplicates of the last character
+            // BUT stop if the next character could start a new word
+            int finalEnd = result.endPos;
+            char lastChar = char.ToLowerInvariant(text[result.endPos]);
+            
+            while (finalEnd + 1 < text.Length)
+            {
+                char nextChar = char.ToLowerInvariant(text[finalEnd + 1]);
+                bool isDuplicate = (nextChar == lastChar);
+                bool isEquivalent = letterEquiv.TryGetValue(nextChar, out char equiv) && equiv == lastChar;
+                
+                if (isDuplicate || isEquivalent)
+                {
+                    // Check if this character could start a new word from the root
+                    // If it can, don't consume it as a trailing duplicate
+                    if (root.Children.ContainsKey(nextChar))
+                    {
+                        // Check if consuming this would prevent finding a word
+                        // by doing a quick look-ahead
+                        var lookAhead = MatchWord(text, finalEnd + 1, root, finalEnd + 1, '\0');
+                        if (lookAhead.endPos != -1)
+                        {
+                            // There's a word starting here, don't consume this character
+                            break;
+                        }
+                    }
+                    
+                    finalEnd++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            return (finalEnd, result.word);
+        }
 
-      private (int matchEnd, TrieNode node) FindLongestMatch(
-          string text, int start, TrieNode node, int pos, char prev)
-      {
-          // Base case: reached end of text
-          if (pos >= text.Length)
-              return (-1, null);
-          
-          char c = char.ToLowerInvariant(text[pos]);
-          int bestEnd = -1;
-          TrieNode bestNode = null;
-          
-          // Option 1: Try direct character match
-          if (node.Children.TryGetValue(c, out TrieNode directNext))
-          {
-              // Check if this position completes a word
-              if (directNext.isEndOfWord)
-              {
-                  bestEnd = pos;
-                  bestNode = directNext;
-              }
-              
-              // Recursively try to extend the match further
-              var result = FindLongestMatch(text, start, directNext, pos + 1, c);
-              if (result.matchEnd > bestEnd)
-              {
-                  bestEnd = result.matchEnd;
-                  bestNode = result.node;
-              }
-          }
-          
-          // Option 2: Try character substitution (i↔e, o↔u)
-          if (letterEquiv.TryGetValue(c, out char equivChar))
-          {
-              if (node.Children.TryGetValue(equivChar, out TrieNode equivNext))
-              {
-                  // Check if substitution completes a word
-                  if (equivNext.isEndOfWord && pos > bestEnd)
-                  {
-                      bestEnd = pos;
-                      bestNode = equivNext;
-                  }
-                  
-                  // Recursively try to extend with substitution
-                  // Pass equivChar as prev so duplicates of 'c' are treated as duplicates of the substituted char
-                  var result = FindLongestMatch(text, start, equivNext, pos + 1, equivChar);
-                  if (result.matchEnd > bestEnd)
-                  {
-                      bestEnd = result.matchEnd;
-                      bestNode = result.node;
-                  }
-              }
-          }
-          
-          // Option 3: Skip duplicate character
-          // Check if current char is duplicate of previous OR duplicate of what previous was substituted to
-          if (prev == c || (letterEquiv.TryGetValue(c, out char cEquiv) && cEquiv == prev))
-          {
-              var result = FindLongestMatch(text, start, node, pos + 1, prev);
-              if (result.matchEnd > bestEnd)
-              {
-                  bestEnd = result.matchEnd;
-                  bestNode = result.node;
-              }
-          }
-          
-          // After finding a match, consume any trailing duplicates of the last character
-          if (bestEnd != -1 && bestNode != null)
-          {
-              int extendedEnd = bestEnd;
-              char lastChar = char.ToLowerInvariant(text[bestEnd]);
-              
-              // Keep consuming duplicate characters after the match
-              // Include both exact duplicates and substitution equivalents
-              while (extendedEnd + 1 < text.Length)
-              {
-                  char nextChar = char.ToLowerInvariant(text[extendedEnd + 1]);
-                  
-                  // Check if next char is exact duplicate OR a substitution equivalent
-                  bool isDuplicate = (nextChar == lastChar);
-                  bool isSubstitute = letterEquiv.TryGetValue(nextChar, out char nextEquiv) && nextEquiv == lastChar;
-                  
-                  if (isDuplicate || isSubstitute)
-                  {
-                      extendedEnd++;
-                  }
-                  else
-                  {
-                      break;
-                  }
-              }
-              
-              bestEnd = extendedEnd;
-          }
-          
-          return (bestEnd, bestNode);
-      }   
-             
-    }
-
+        private (int endPos, string word) MatchWord(string text, int textPos, TrieNode node, int startPos, char prevChar)
+        {
+            if (textPos >= text.Length)
+                return (-1, null);
+            
+            char currentChar = char.ToLowerInvariant(text[textPos]);
+            int bestEnd = -1;
+            string bestWord = null;
+            
+            // Strategy 1: Match current character directly
+            if (node.Children.TryGetValue(currentChar, out TrieNode directChild))
+            {
+                if (directChild.isEndOfWord)
+                {
+                    bestEnd = textPos;
+                    bestWord = directChild.overallWord;
+                }
+                
+                var directResult = MatchWord(text, textPos + 1, directChild, startPos, currentChar);
+                if (directResult.endPos > bestEnd)
+                {
+                    bestEnd = directResult.endPos;
+                    bestWord = directResult.word;
+                }
+            }
+            
+            // Strategy 2: Try letter substitution (i↔e, o↔u)
+            if (letterEquiv.TryGetValue(currentChar, out char substitutedChar))
+            {
+                if (node.Children.TryGetValue(substitutedChar, out TrieNode substChild))
+                {
+                    if (substChild.isEndOfWord && textPos > bestEnd)
+                    {
+                        bestEnd = textPos;
+                        bestWord = substChild.overallWord;
+                    }
+                    
+                    var substResult = MatchWord(text, textPos + 1, substChild, startPos, substitutedChar);
+                    if (substResult.endPos > bestEnd)
+                    {
+                        bestEnd = substResult.endPos;
+                        bestWord = substResult.word;
+                    }
+                }
+            }
+            
+            // Strategy 3: Skip duplicate/equivalent character
+            // Only skip if we're not at the starting position AND current char is a duplicate
+            bool canSkip = textPos > startPos && 
+                          (currentChar == prevChar || 
+                           (letterEquiv.TryGetValue(currentChar, out char currentEquiv) && currentEquiv == prevChar));
+            
+            if (canSkip)
+            {
+                var skipResult = MatchWord(text, textPos + 1, node, startPos, prevChar);
+                if (skipResult.endPos > bestEnd)
+                {
+                    bestEnd = skipResult.endPos;
+                    bestWord = skipResult.word;
+                }
+            }
+            
+            return (bestEnd, bestWord);
+        }     
+    } 
+   
 }
+
+
 
