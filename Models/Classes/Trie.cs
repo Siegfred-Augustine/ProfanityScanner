@@ -81,6 +81,7 @@ namespace ProfanityScanner.Models.Classes
 
               return matches;
           }
+          
       private (int matchEnd, TrieNode node) FindLongestMatch(
           string text, int start, TrieNode node, int pos, char prev)
       {
@@ -124,7 +125,8 @@ namespace ProfanityScanner.Models.Classes
                   }
                   
                   // Recursively try to extend with substitution
-                  var result = FindLongestMatch(text, start, equivNext, pos + 1, c);
+                  // Pass equivChar as prev so duplicates of 'c' are treated as duplicates of the substituted char
+                  var result = FindLongestMatch(text, start, equivNext, pos + 1, equivChar);
                   if (result.matchEnd > bestEnd)
                   {
                       bestEnd = result.matchEnd;
@@ -133,10 +135,11 @@ namespace ProfanityScanner.Models.Classes
               }
           }
           
-          // Option 3: Skip duplicate character (e.g., "booo" matches "boo")
-          if (prev == c)
+          // Option 3: Skip duplicate character
+          // Check if current char is duplicate of previous OR duplicate of what previous was substituted to
+          if (prev == c || (letterEquiv.TryGetValue(c, out char cEquiv) && cEquiv == prev))
           {
-              var result = FindLongestMatch(text, start, node, pos + 1, c);
+              var result = FindLongestMatch(text, start, node, pos + 1, prev);
               if (result.matchEnd > bestEnd)
               {
                   bestEnd = result.matchEnd;
@@ -151,10 +154,23 @@ namespace ProfanityScanner.Models.Classes
               char lastChar = char.ToLowerInvariant(text[bestEnd]);
               
               // Keep consuming duplicate characters after the match
-              while (extendedEnd + 1 < text.Length && 
-                    char.ToLowerInvariant(text[extendedEnd + 1]) == lastChar)
+              // Include both exact duplicates and substitution equivalents
+              while (extendedEnd + 1 < text.Length)
               {
-                  extendedEnd++;
+                  char nextChar = char.ToLowerInvariant(text[extendedEnd + 1]);
+                  
+                  // Check if next char is exact duplicate OR a substitution equivalent
+                  bool isDuplicate = (nextChar == lastChar);
+                  bool isSubstitute = letterEquiv.TryGetValue(nextChar, out char nextEquiv) && nextEquiv == lastChar;
+                  
+                  if (isDuplicate || isSubstitute)
+                  {
+                      extendedEnd++;
+                  }
+                  else
+                  {
+                      break;
+                  }
               }
               
               bestEnd = extendedEnd;
@@ -162,7 +178,6 @@ namespace ProfanityScanner.Models.Classes
           
           return (bestEnd, bestNode);
       }
-       
     }
 }
 
