@@ -1,99 +1,134 @@
-﻿
+﻿@using System.Text.RegularExpressions
 @{
     ViewData["Title"] = "Home Page";
+
+  
+    string FormatCensoredText(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return "";
+        return Regex.Replace(input, @"(\*+)", "<span class='asterisk-pill'>$1</span>");
+    }
 }
 
 <head>
-    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 </head>
+
 <div class="window-container">
     <div class="main-container">
-        <header>
-            <div class="title-container">
+        <header class="app-header">
+            <div class="title-group">
                 <h1>Profanity Filter</h1>
                 <p>Real-time message monitoring and censorship</p>
             </div>
-            <div class="insights-btn-container">
-                <button class="btn btn-light btn-view-insight">View Insights</button>
+            <div class="header-buttons">
+                <button class="btn btn-view" onclick="toggleSidebar()">
+                    <span class="eye-icon">👁</span> View Insights
+                </button>
+                <button class="btn btn-blue">Admin</button>
             </div>
         </header>
-        <main class="text-center messages-container">
-            <form class="form-container" method="post" asp-action="Index">
-                <textarea name="inputText" id="txtInput" type="text" placeholder="type your message here..."></textarea>
-                <button type="submit" class="btn btn-primary mt-2">Scan</button>
+
+        <main class="content-area">
+            <form class="message-form" method="post" asp-action="Index">
+                <div class="input-wrapper">
+                    <textarea name="inputText" id="txtInput" placeholder="Type your message here..."></textarea>
+                    <button type="submit" class="btn-send">
+                        <span>➤ Send</span>
+                    </button>
+                </div>
             </form>
-            <div class="profane-item-container">
-                @foreach(var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
+
+            @* Added wrapping div for scroll functionality *@
+            <div class="message-feed">
+                @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
                 {
-                    
-                    <div class="message-item">
-                        <div class="message-item-header">
-                            <p>@message.dateTime</p>
-                            <div class="profane-word-counter">
-                        @if(message.profaneWords.Count != 1){
-                          <label>! @message.profaneWords.Count profane words</label>
-                        }
-                        else
-                        {
-                            <label>! 1 profane word</label>
-                        }
-                            </div>
+                    <div class="message-card">
+                        <div class="card-meta">
+                            <span class="timestamp">@message.dateTime</span>
+                            <span class="word-count-badge">
+                                ! @message.profaneWords.Count profane word@(message.profaneWords.Count == 1 ? "" : "s")
+                            </span>
                         </div>
-                        <h1>@message.output</h1>                        
+                        <div class="card-text">
+                            @Html.Raw(FormatCensoredText(message.output))
+                        </div>
                     </div>
                 }
             </div>
         </main>
     </div>
-    <aside class="sidebar-container r-flex">
-        <div class="siderbar-row header-container">
-            <h1>Profanity Insights</h1>
-        </div>
-        <div class="siderbar-row identified-words-container">
-            <h1 class="sidebar-row-title">Identified Profane Words</h1>
-            <div class="identified-words-list-container">
-                @foreach(var message in ProfanityScanner.Models.Classes.Scanner.originalProfane){
-                  <div><p class="identified-profane-item">@message</p></div>
-                }
-            </div>
-        </div>
-        <div class="siderbar-row summary-container">
-            <h1 class="sidebar-row-title">Summary By Message</h1>
-            <div class="summary-list-container">
-                @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
-                {
-                    <div class="summary-list-item" onclick="markAsHide(this)">
-                        <div class="sidebar-message-item-container">
-                            <div class="sidebar-message-item-header">
-                                <h1>@message.output</h1>
-                                <p>@message.dateTime</p>
-                            </div>
 
-                            <div class="sidebar-message-item-hide hide-content">
-                                <div class="sidebar-message-item-content">
-                                    <p>Original message:</p>
-                                    <h1>@message.original</h1>
+    <aside class="sidebar" id="sidebar" style="display: block;">
+        <div class="sidebar-header">
+            <h3>Profanity Insights</h3>
+            <button class="btn-close-sidebar" onclick="toggleSidebar()" aria-label="Close Sidebar">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <div class="sidebar-scroll-area">
+            <div class="sidebar-section">
+                <label class="section-label">Identified Profane Words</label>
+                <div class="pill-container">
+                    @foreach (var word in ProfanityScanner.Models.Classes.Scanner.originalProfane)
+                    {
+                        <span class="profane-pill red">@word</span>
+                    }
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <label class="section-label">Summary by Message</label>
+                <div class="summary-list">
+                    @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
+                    {
+                        <div class="summary-card" onclick="markAsHide(this)">
+                            <div class="summary-card-header">
+                                <span class="chevron">›</span>
+                                <div class="summary-preview">
+                                    <p>@Html.Raw(FormatCensoredText(message.output))</p>
+                                    <small>@message.dateTime</small>
                                 </div>
-                                <div class="sidebar-message-item-detected-words-container">
-                                    <p>Detected words:</p>
-                                    <div class="sidebar-message-item-detected-words">
+                                <span class="count-square">@message.profaneWords.Count</span>
+                            </div>
+                            <div class="summary-card-body">
+                                <div class="detail-row">
+                                    <p class="label">Original message:</p>
+                                    <p class="val">@message.original</p>
+                                </div>
+                                <div class="detail-row">
+                                    <p class="label">Detected words:</p>
+                                    <div class="pill-container mini">
                                         @foreach (var word in message.profaneWords)
                                         {
-                                            <h1 class="identified-profane-item detected-word-item">@word</h1>
+                                            <span class="profane-pill red">@word</span>
                                         }
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="sidebar-profane-count">
-                            @message.profaneWords.Count()
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div>
-
     </aside>
 </div>
-<script src="/js/scripts.js"></script>
+
+@section Scripts {
+    <script>
+        function markAsHide(element) {
+            element.classList.toggle('active');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+            } else {
+                sidebar.style.display = 'none';
+            }
+        }
+    </script>
+}
