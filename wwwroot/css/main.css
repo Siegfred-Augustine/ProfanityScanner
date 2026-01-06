@@ -114,9 +114,42 @@ main {
     flex-direction: column;
     padding: 1em 1em;
 }
+.message-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 0px 8px 8px;
+}
+.profane-word-counter {
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  background-color: #FFE2E2;
+  font-size: 12px;
+}
+.message-item-header label {
+    color: #C10007;
+}
 
 .message-item h1, p {
     text-align: left;
 }
 
+.summary-list-item {
+  
+}
 
+.identified-words-list-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.identified-words-list-container div {
+  height: 34px;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  background-color: #E74C3C;
+}

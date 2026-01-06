@@ -29,6 +29,15 @@
                     <div class="message-item">
                         <div class="message-item-header">
                             <p>@message.dateTime</p>
+                            <div class="profane-word-counter">
+                        @if(message.profaneWords.Count != 1){
+                          <label>! @message.profaneWords.Count profane words</label>
+                        }
+                        else
+                        {
+                            <label>! 1 profane word</label>
+                        }
+                            </div>
                         </div>
                         <h1>@message.output</h1>                        
                     </div>
@@ -44,7 +53,7 @@
             <h1 class="sidebar-row-title">Identified Profane Words</h1>
             <div class="identified-words-list-container">
                 @foreach(var message in ProfanityScanner.Models.Classes.Scanner.originalProfane){
-                  <p class="identified-profane-item">@message</p>
+                  <div><p class="identified-profane-item">@message</p></div>
                 }
             </div>
         </div>
