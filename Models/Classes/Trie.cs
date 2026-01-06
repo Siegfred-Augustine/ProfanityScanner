@@ -14,6 +14,13 @@ namespace ProfanityScanner.Models.Classes
     {
         private readonly TrieNode root = new TrieNode();
         private readonly IWebHostEnvironment _env;
+        private Dictionary<char,char> letterEquiv = new Dictionary<char,char>(){
+          {'i', 'e'},
+          {'e', 'i'},
+          {'o', 'u'},
+          {'u', 'o'}
+        };
+
         public Trie(IWebHostEnvironment env)
         {
             _env = env;
@@ -55,60 +62,107 @@ namespace ProfanityScanner.Models.Classes
         }
 
         
+         public List<(int start, int end)> FindProfanity(string text)
+          {
+              List<(int, int)> matches = new();
+              int n = text.Length;
 
-        public List<(int start, int end)> FindProfanity(string text)
-        {
-            List<(int, int)> matches = new();
-            int n = text.Length;
+              for (int i = 0; i < n; i++)
+              {
+                  var result = FindLongestMatch(text, i, root, i, '\0');
+                  
+                  if (result.matchEnd != -1)
+                  {
+                      matches.Add((i, result.matchEnd));
+                      Scanner.originalProfane.Add(result.node.overallWord);
+                      i = result.matchEnd; // Skip past the matched word
+                  }
+              }
 
-            for (int i = 0; i < n; i++)
-            {
-                TrieNode lastNode = new TrieNode();
-                TrieNode node = root;
-                char prev = '\0';
-                int lastMatch = -1;
-
-                for (int j = i; j < n; j++)
-                {
-                    // Convert current char to lowercase
-                    char c = char.ToLowerInvariant(text[j]);
-                    // Convert next char to lowercase
-                    // If current char 'c' is within the dictionary of the current node, move to the next node containing 'c' 
-                    if (node.Children.TryGetValue(c, out TrieNode next))
-                    {
-                        node = next;
-                    }
-                    // If the current char 'c' is a duplicate of the previous, do nothing (case: "tannnga")
-                    else if (prev == c ) 
-                    {
-                        // Do nothing
-
-                    }
-                    else 
-                    { 
-                        break; 
-                    }
-
-                    // Doesn't work for profane words ending in two similar letters (ex: piste ginoo)
-                    
-                      // Console.WriteLine(node.overallWord);
-                    if (node.isEndOfWord)
-                    {
-                        lastMatch = j;
-                        lastNode = node;
-                    }
-
-                    prev = c;
-                }
-                if(lastMatch != -1){
-                  matches.Add((i, lastMatch));
-                  i = lastMatch - 1;
-                  Scanner.originalProfane.Add(lastNode.overallWord);
-                }
-            }
-
-            return matches;
-        }
+              return matches;
+          }
+      private (int matchEnd, TrieNode node) FindLongestMatch(
+          string text, int start, TrieNode node, int pos, char prev)
+      {
+          // Base case: reached end of text
+          if (pos >= text.Length)
+              return (-1, null);
+          
+          char c = char.ToLowerInvariant(text[pos]);
+          int bestEnd = -1;
+          TrieNode bestNode = null;
+          
+          // Option 1: Try direct character match
+          if (node.Children.TryGetValue(c, out TrieNode directNext))
+          {
+              // Check if this position completes a word
+              if (directNext.isEndOfWord)
+              {
+                  bestEnd = pos;
+                  bestNode = directNext;
+              }
+              
+              // Recursively try to extend the match further
+              var result = FindLongestMatch(text, start, directNext, pos + 1, c);
+              if (result.matchEnd > bestEnd)
+              {
+                  bestEnd = result.matchEnd;
+                  bestNode = result.node;
+              }
+          }
+          
+          // Option 2: Try character substitution (i↔e, o↔u)
+          if (letterEquiv.TryGetValue(c, out char equivChar))
+          {
+              if (node.Children.TryGetValue(equivChar, out TrieNode equivNext))
+              {
+                  // Check if substitution completes a word
+                  if (equivNext.isEndOfWord && pos > bestEnd)
+                  {
+                      bestEnd = pos;
+                      bestNode = equivNext;
+                  }
+                  
+                  // Recursively try to extend with substitution
+                  var result = FindLongestMatch(text, start, equivNext, pos + 1, c);
+                  if (result.matchEnd > bestEnd)
+                  {
+                      bestEnd = result.matchEnd;
+                      bestNode = result.node;
+                  }
+              }
+          }
+          
+          // Option 3: Skip duplicate character (e.g., "booo" matches "boo")
+          if (prev == c)
+          {
+              var result = FindLongestMatch(text, start, node, pos + 1, c);
+              if (result.matchEnd > bestEnd)
+              {
+                  bestEnd = result.matchEnd;
+                  bestNode = result.node;
+              }
+          }
+          
+          // After finding a match, consume any trailing duplicates of the last character
+          if (bestEnd != -1 && bestNode != null)
+          {
+              int extendedEnd = bestEnd;
+              char lastChar = char.ToLowerInvariant(text[bestEnd]);
+              
+              // Keep consuming duplicate characters after the match
+              while (extendedEnd + 1 < text.Length && 
+                    char.ToLowerInvariant(text[extendedEnd + 1]) == lastChar)
+              {
+                  extendedEnd++;
+              }
+              
+              bestEnd = extendedEnd;
+          }
+          
+          return (bestEnd, bestNode);
+      }
+       
     }
 }
 
