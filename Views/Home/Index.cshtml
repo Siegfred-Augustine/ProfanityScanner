@@ -1,4 +1,5 @@
 ﻿@using System.Text.RegularExpressions
+@using System.Linq 
 @{
     ViewData["Title"] = "Home Page";
 
@@ -40,7 +41,7 @@
 
             @* Added wrapping div for scroll functionality *@
             <div class="message-feed">
-                @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
+                @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList.AsEnumerable().Reverse())
                 {
                     <div class="message-card">
                         <div class="card-meta">
@@ -81,7 +82,7 @@
             <div class="sidebar-section">
                 <label class="section-label">Summary by Message</label>
                 <div class="summary-list">
-                    @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList)
+                    @foreach (var message in ProfanityScanner.Models.Classes.Scanner.scannerList.AsEnumerable().Reverse())
                     {
                         <div class="summary-card" onclick="markAsHide(this)">
                             <div class="summary-card-header">
@@ -129,5 +130,16 @@
                 sidebar.style.display = 'none';
             }
         }
+        /*
+        function scrollToBottom() {
+            const feed = document.querySelector('.message-feed');
+            const sidebarScroll = document.querySelector('.sidebar-scroll-area');
+
+            if (feed) feed.scrollTop = feed.scrollHeight;
+            if (sidebarScroll) sidebarScroll.scrollTop = sidebarScroll.scrollHeight;
+        }
+
+        window.onload = scrollToBottom; 
+        /*
     </script>
 }
