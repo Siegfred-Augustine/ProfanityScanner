@@ -14,7 +14,6 @@ namespace ProfanityScanner.Models.Classes
             {'1', 'i'},
             {'|', 'i'},
             {'0', 'o'},
-            {'v', 'u'},
             {'$', 's'},
             {'#', 'h'}
         };

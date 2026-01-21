@@ -18,7 +18,8 @@ namespace ProfanityScanner.Models.Classes
           {'i', 'e'},
           {'e', 'i'},
           {'o', 'u'},
-          {'u', 'o'}
+          {'u', 'o'},
+          {'v', 'u'}
         };
 
         public Trie(IWebHostEnvironment env)
@@ -89,11 +90,12 @@ namespace ProfanityScanner.Models.Classes
                     // If the last character can start a word from root, check from that position instead
                     if (root.Children.ContainsKey(lastChar))
                     {
+                        //this will check if the last character of the current word can be the start of another profane word
                         var testMatch = MatchWord(text, result.endPos, root, result.endPos, '\0');
                         if (testMatch.endPos != -1)
                         {
                             Console.WriteLine($"  Last char '{lastChar}' can start a new word, backtracking to pos {result.endPos}");
-                            nextPos = result.endPos;
+                            nextPos = result.endPos; //sets the next checking position as the last character of the current word
                         }
                     }
                     
@@ -159,6 +161,7 @@ namespace ProfanityScanner.Models.Classes
                 }
             }
             
+            Console.WriteLine($"Last Position {finalEnd}"); 
             return (finalEnd, result.word);
         }
 
@@ -188,7 +191,7 @@ namespace ProfanityScanner.Models.Classes
                 }
             }
             
-            // Strategy 2: Try letter substitution (i↔e, o↔u)
+            // Strategy 2: Try letter substitution (i-e, o-u)
             if (letterEquiv.TryGetValue(currentChar, out char substitutedChar))
             {
                 if (node.Children.TryGetValue(substitutedChar, out TrieNode substChild))
@@ -223,7 +226,6 @@ namespace ProfanityScanner.Models.Classes
                     bestWord = skipResult.word;
                 }
             }
-            
             return (bestEnd, bestWord);
         } 
                
