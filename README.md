@@ -44,7 +44,6 @@ The scanner first normalizes input text by substituting common obfuscation chara
 
 A custom trie data structure stores all profane words for efficient searching:
 
-- O(L) search time where L is word length
 - Memory efficient using dynamic dictionaries
 - Supports partial matching and word completion
 
