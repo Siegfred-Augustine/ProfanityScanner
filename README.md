@@ -6,6 +6,7 @@ An intelligent profanity filtering web application built with ASP.NET Core MVC t
 ![.NET](https://img.shields.io/badge/.NET-7.0-purple.svg)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC-green.svg)
 
+![](Images/Example.jpeg)
 ## 🚀 Features
 
 - **Smart Text Detection** - Identifies profane words even with character obfuscation (e.g., `@` for `a`, `4` for `a`, `1` for `i`)
